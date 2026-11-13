@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Friendsgiving Sign-up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --accent: #a9502f; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: linear-gradient(180deg, #f3ece2 0%, #ece2d4 100%); background-attachment: fixed; color: #3b312a; font-family: 'DM Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid #3b312a; outline-offset: 2px; }
+main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
+.btn { background-image: linear-gradient(165deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 55%); background-color: var(--accent); color: #fff; border: 0; border-radius: 999px; min-height: 44px; padding: 0 22px; font-weight: 600; font-size: 14px; letter-spacing: 0.02em; box-shadow: 0 4px 12px rgba(169,80,47,0.25); transition: transform .2s ease, box-shadow .2s ease; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(169,80,47,0.32); }
+.btn:disabled { opacity: .6; cursor: default; transform: none; }
+.link { background: none; border: 0; min-height: 44px; padding: 0 6px; font-size: 14px; color: #6e6055; text-decoration: underline; text-underline-offset: 3px; }
+.link:hover { color: var(--accent); }
+.chip { background: none; border: 0; min-height: 44px; padding: 0 12px; font-size: 14px; color: #6e6055; border-bottom: 2px solid transparent; }
+.chip:hover { color: #3b312a; }
+.chip.on { color: #3b312a; font-weight: 600; border-bottom-color: var(--accent); }
+.tagbtn { background-image: linear-gradient(160deg, rgba(255,255,255,0.75), rgba(255,255,255,0) 50%); background-color: #f6eee4; border: 1px solid #d8cfc2; border-radius: 22px / 26px; min-height: 44px; padding: 0 18px; font-size: 13px; color: #3b312a; box-shadow: inset 0 -2px 0 rgba(120,90,60,0.08); transition: all .2s ease; }
+.tagbtn:hover { border-color: var(--accent); }
+.tagbtn.on { background-color: var(--accent); border-color: var(--accent); color: #fff; }
+.pill { font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 12px / 14px; background-image: linear-gradient(160deg, rgba(255,255,255,0.7), rgba(255,255,255,0) 55%); background-color: #ead9cc; color: #6b3a24; white-space: nowrap; }
+.field { flex: 1 1 200px; min-width: 0; background: #fffaf3; color: #3b312a; border: 1px solid #d8cfc2; border-radius: 999px; min-height: 44px; padding: 0 18px; }
+.field::placeholder { color: #8a7b6e; }
+.field:focus-visible { border-color: #3b312a; }
+.entry { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-height: 48px; padding: 4px 0; border-bottom: 1px solid #e6dccd; }
+.entry .name { font-weight: 600; overflow-wrap: anywhere; }
+.entry .who { font-size: 14px; color: #6e6055; }
+.entry .grow { flex: 1 1 0; }
+.sec { background: rgba(255,250,243,0.7); border: 1px solid #e6dccd; border-radius: 24px; padding: 20px 22px 18px; box-shadow: 0 8px 28px rgba(110,80,50,0.06); margin-top: 22px; }
+.sec h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 600; margin: 0; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.status { font-size: 13px; font-weight: 600; letter-spacing: 0.03em; }
+.muted { color: #6e6055; }
+.list { border-top: 1px solid #ddd2c2; margin-top: 8px; }
+.addform { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+.addrow { display: flex; flex-wrap: wrap; gap: 8px; }
+.tagrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.banner { margin: 14px 0 0; padding: 10px 14px; border-radius: 14px; background: #f3dccf; color: #6b3a24; font-weight: 500; }
+.banner[hidden] { display: none; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (prefers-reduced-motion: reduce) { .btn, .tagbtn { transition: none; } .btn:hover { transform: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header style="text-align: center; background: #ead9cc; border-radius: 280px 280px 28px 28px; padding: 40px 24px 28px;">
+    <svg aria-hidden="true" width="190" height="150" viewBox="0 0 190 150" fill="none" stroke="#a9502f" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="display: block; margin: 0 auto 6px;">
+      <circle cx="95" cy="50" r="34"></circle>
+      <circle cx="95" cy="50" r="3"></circle>
+      <path d="M121 50 L69.6 31.6 M113.4 68.4 L69.6 68.4 M95 76 L95 24 M76.6 68.4 L113.4 31.6 M69 50 L121 50 M76.6 31.6 L113.4 68.4 M95 24 L95 76 M113.4 31.6 L69.6 68.4"></path>
+      <path d="M95 84 L72 124 M95 84 L95 138 M95 84 L118 124"></path>
+      <ellipse cx="70" cy="132" rx="4" ry="11" transform="rotate(25 70 132)"></ellipse>
+      <ellipse cx="95" cy="146" rx="4" ry="9"></ellipse>
+      <ellipse cx="120" cy="132" rx="4" ry="11" transform="rotate(-25 120 132)"></ellipse>
+      <path d="M26 118 L36 96 L48 118 L44 142 L30 142 Z M36 96 L38 142 M26 118 L48 118" stroke-width="1.2"></path>
+      <path d="M148 128 L157 108 L168 128 L164 148 L152 148 Z M157 108 L158 148 M148 128 L168 128" stroke-width="1.2"></path>
+    </svg>
+    <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: clamp(36px, 8vw, 54px); line-height: 1.05; margin: 8px 0 14px; letter-spacing: 0.01em;">Friendsgiving</h1>
+    <p style="margin: 0; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: #6b3a24; font-weight: 600;">Friday, November 20 · 5:00 PM · Eli &amp; Molly's, 439 Helman St</p>
+  </header>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 24px;">
+    <label for="guestName" style="font-weight: 600;">Enter your name</label>
+    <input id="guestName" class="field" type="text" maxlength="40" autocomplete="given-name" style="max-width: 280px;">
+  </div>
+
+  <p id="banner" class="banner" role="alert" hidden></p>
+  <p id="summary" class="muted" style="margin: 14px 0 0;"></p>
+  <div id="filters" role="group" aria-label="Filter the list" style="display: flex; flex-wrap: wrap; margin: 8px 0 0; border-bottom: 1px solid #ddd2c2;"></div>
+  <div id="sections"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var FOOD = [['veg', 'Vegetarian'], ['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']];
+  var SECTIONS = [
+    { id: 'apps', name: 'Appetizers', target: 4, ph: 'What are you bringing?', tags: FOOD },
+    { id: 'mains', name: 'Mains', target: 3, ph: 'What are you bringing?', tags: FOOD },
+    { id: 'sides', name: 'Sides and salads', target: 8, ph: 'What are you bringing?', tags: FOOD },
+    { id: 'sweets', name: 'Desserts', target: 5, ph: 'What are you bringing?', tags: [['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']] },
+    { id: 'drinks', name: 'Drinks', target: 5, ph: 'What are you bringing?', tags: [['alc', 'Alcoholic'], ['nonalc', 'Non-alcoholic']] },
+    { id: 'supplies', name: 'Supplies', target: 3, ph: 'Ice, etc.', tags: [] }
+  ];
+  var FILTERS = [['all', 'Everything'], ['mine', 'Mine'], ['veg', 'Vegetarian'], ['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']];
+  var TAGNAME = {};
+  SECTIONS.forEach(function (s) { s.tags.forEach(function (t) { TAGNAME[t[0]] = t[1]; }); });
+
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function rand() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'k' + Math.random().toString(36).slice(2) + Date.now().toString(36); }
+
+  var ownerKey = ls('ff_key') || (function () { var k = rand(); ls('ff_key', k); return k; })();
+  var params = new URLSearchParams(location.search);
+  if (params.get('admin')) ls('ff_admin', params.get('admin'));
+  var adminKey = ls('ff_admin') || '';
+  var mine = {};
+  try { (JSON.parse(ls('ff_mine') || '[]')).forEach(function (id) { mine[id] = 1; }); } catch (e) {}
+
+  var state = { entries: [], filter: 'all', draftTags: {}, loaded: false, failed: false };
+  var $ = function (id) { return document.getElementById(id); };
+  var nameEl = $('guestName');
+  nameEl.value = ls('ff_name') || '';
+  nameEl.addEventListener('input', function () { ls('ff_name', nameEl.value); });
+
+  function showBanner(msg) { var b = $('banner'); b.textContent = msg || ''; b.hidden = !msg; }
+
+  /* ---- build the static skeleton once so inputs keep focus ---- */
+  var secRoot = $('sections');
+  secRoot.innerHTML = SECTIONS.map(function (s) {
+    var tagRow = s.tags.length ? '<div class="tagrow" role="group" aria-label="Good to know"><span class="muted" style="font-size:13px">Mine is:</span>' +
+      s.tags.map(function (t) { return '<button type="button" class="tagbtn" aria-pressed="false" data-sec="' + s.id + '" data-tag="' + t[0] + '">' + esc(t[1]) + '</button>'; }).join('') + '</div>' : '';
+    return '<section class="sec" aria-labelledby="h-' + s.id + '" id="sec-' + s.id + '">' +
+      '<div class="sec-head"><h2 id="h-' + s.id + '">' + esc(s.name) + '</h2><span class="status" data-role="status"></span></div>' +
+      '<p class="muted" data-role="tally" style="margin:2px 0 0;font-size:14px" hidden></p>' +
+      '<div class="list" data-role="list"></div>' +
+      '<form class="addform" data-sec="' + s.id + '"><div class="addrow">' +
+      '<label class="vh" for="add-' + s.id + '">Add to ' + esc(s.name) + '</label>' +
+      '<input id="add-' + s.id + '" class="field" type="text" maxlength="80" placeholder="' + esc(s.ph) + '">' +
+      '<button type="submit" class="btn">Add</button></div>' + tagRow + '</form></section>';
+  }).join('');
+
+  $('filters').innerHTML = FILTERS.map(function (f) { return '<button class="chip" data-filter="' + f[0] + '" aria-pressed="false">' + esc(f[1]) + '</button>'; }).join('');
+
+  /* ---- update the parts that change ---- */
+  function update() {
+    var n = state.entries.length, needs = [];
+    SECTIONS.forEach(function (s) {
+      var all = state.entries.filter(function (e) { return e.course === s.id; });
+      var c = all.length;
+      if (c < s.target) needs.push((s.target - c) + ' more ' + s.name.toLowerCase());
+      var st = c === 0 ? ['Nothing yet', '#9a4524'] : c < s.target ? ['Needs more', '#80551f'] : ['Covered', '#56644a'];
+      var el = $('sec-' + s.id);
+      var status = el.querySelector('[data-role=status]');
+      status.textContent = st[0] + ' · ' + c + ' of ' + s.target; status.style.color = st[1];
+      var counts = {};
+      all.forEach(function (e) { (e.tags || []).forEach(function (k) { counts[k] = (counts[k] || 0) + 1; }); });
+      var tally = s.tags.filter(function (t) { return counts[t[0]]; }).map(function (t) { return counts[t[0]] + ' ' + t[1].toLowerCase(); }).join(' · ');
+      var tEl = el.querySelector('[data-role=tally]'); tEl.textContent = tally; tEl.hidden = !tally;
+      var shown = all.filter(function (e) {
+        var f = state.filter;
+        if (f === 'all') return true;
+        if (f === 'mine') return !!mine[e.id];
+        return (e.tags || []).indexOf(f) > -1;
+      });
+      var html = shown.map(function (e) {
+        var canRemove = !!mine[e.id] || !!adminKey;
+        return '<div class="entry"><span class="name">' + esc(e.name) + '</span><span class="who">' + esc(e.who) + '</span>' +
+          (e.tags || []).map(function (k) { return '<span class="pill">' + esc(TAGNAME[k] || k) + '</span>'; }).join('') +
+          '<span class="grow"></span>' +
+          (canRemove ? '<button class="link" data-remove="' + esc(e.id) + '" aria-label="Remove ' + esc(e.name) + '">Remove</button>' : '') + '</div>';
+      }).join('');
+      if (!shown.length) html = '<p class="muted" style="margin:10px 0">' + (!state.loaded ? 'Loading…' : all.length ? 'Nothing here matches that filter.' : 'Nothing yet. Add the first one below.') + '</p>';
+      el.querySelector('[data-role=list]').innerHTML = html;
+      el.querySelectorAll('.tagbtn').forEach(function (b) {
+        var on = (state.draftTags[s.id] || []).indexOf(b.getAttribute('data-tag')) > -1;
+        b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    });
+    var last;
+    var narr = n === 0 ? 'Enter your name, then add what you are bringing under any section.' :
+      !needs.length ? 'Every section is covered.' : (last = needs.pop(), 'Still looking for ' + (needs.length ? needs.join(', ') + ' and ' + last : last) + '.');
+    $('summary').textContent = (n === 1 ? '1 dish' : n + ' dishes') + ' so far. ' + narr;
+    document.querySelectorAll('[data-filter]').forEach(function (b) {
+      var on = b.getAttribute('data-filter') === state.filter;
+      b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  /* ---- talking to the server ---- */
+  function api(method, path, body, headers) {
+    var h = Object.assign({ 'Content-Type': 'application/json' }, headers || {});
+    return fetch(path, { method: method, headers: h, body: body ? JSON.stringify(body) : undefined }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) { var e = new Error(j.error || 'Request failed'); e.status = r.status; throw e; }
+        return j;
+      });
+    });
+  }
+  function load() {
+    return api('GET', '/api/entries').then(function (j) {
+      state.entries = j.entries || []; state.loaded = true; state.failed = false; showBanner(''); update();
+    }).catch(function (e) {
+      state.failed = true; state.loaded = true;
+      showBanner(e.status === 500 && /Storage/.test(e.message) ? e.message : 'Could not reach the list. Check your connection and try again.');
+      update();
+    });
+  }
+  function saveMine() { ls('ff_mine', JSON.stringify(Object.keys(mine))); }
+
+  /* ---- events ---- */
+  document.addEventListener('click', function (ev) {
+    var t = ev.target.closest('button');
+    if (!t) return;
+    if (t.hasAttribute('data-filter')) { state.filter = t.getAttribute('data-filter'); update(); return; }
+    if (t.hasAttribute('data-tag')) {
+      var sec = t.getAttribute('data-sec'), tag = t.getAttribute('data-tag');
+      var cur = state.draftTags[sec] || [];
+      state.draftTags[sec] = cur.indexOf(tag) > -1 ? cur.filter(function (k) { return k !== tag; }) : cur.concat([tag]);
+      update(); return;
+    }
+    if (t.hasAttribute('data-remove')) {
+      var id = t.getAttribute('data-remove');
+      t.disabled = true;
+      api('DELETE', '/api/entries?id=' + encodeURIComponent(id), null, { 'x-owner-key': ownerKey, 'x-admin-key': adminKey }).then(function () {
+        state.entries = state.entries.filter(function (e) { return e.id !== id; }); delete mine[id]; saveMine(); update();
+      }).catch(function (e) { t.disabled = false; showBanner(e.message || 'Could not remove that.'); });
+    }
+  });
+  document.addEventListener('submit', function (ev) {
+    var form = ev.target.closest('form.addform');
+    if (!form) return;
+    ev.preventDefault();
+    var sec = form.getAttribute('data-sec');
+    var input = form.querySelector('input');
+    var dish = input.value.trim(), who = nameEl.value.trim();
+    if (!who) { showBanner('Enter your name first, then add your dish.'); nameEl.focus(); return; }
+    if (!dish) { input.focus(); return; }
+    var btn = form.querySelector('button[type=submit]'); btn.disabled = true;
+    api('POST', '/api/entries', { course: sec, name: dish, who: who, tags: state.draftTags[sec] || [], ownerKey: ownerKey }).then(function (j) {
+      state.entries.push(j.entry); mine[j.entry.id] = 1; saveMine();
+      input.value = ''; state.draftTags[sec] = []; showBanner(''); btn.disabled = false; update();
+    }).catch(function (e) { btn.disabled = false; showBanner(e.message || 'That did not save. Try again.'); });
+  });
+
+  load();
+  setInterval(function () { if (!document.hidden) load(); }, 20000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) load(); });
+  update();
+})();
+</script>
+</body>
+</html>
