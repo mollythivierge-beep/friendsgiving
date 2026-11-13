@@ -10,7 +10,7 @@
 <style>
 :root { --accent: #a9502f; }
 * { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; background: linear-gradient(180deg, #f3ece2 0%, #ece2d4 100%); background-attachment: fixed; color: #3b312a; font-family: 'DM Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5; }
+body { margin: 0; min-height: 100vh; background: linear-gradient(180deg, #f3ece2 0%, #ece2d4 100%); color: #3b312a; font-family: 'DM Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5; }
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 button:focus-visible, input:focus-visible { outline: 2px solid #3b312a; outline-offset: 2px; }
@@ -27,7 +27,7 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
 .tagbtn:hover { border-color: var(--accent); }
 .tagbtn.on { background-color: var(--accent); border-color: var(--accent); color: #fff; }
 .pill { font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 12px / 14px; background-image: linear-gradient(160deg, rgba(255,255,255,0.7), rgba(255,255,255,0) 55%); background-color: #ead9cc; color: #6b3a24; white-space: nowrap; }
-.field { flex: 1 1 200px; min-width: 0; background: #fffaf3; color: #3b312a; border: 1px solid #d8cfc2; border-radius: 999px; min-height: 44px; padding: 0 18px; }
+.field { font-size: 16px; flex: 1 1 200px; min-width: 0; background: #fffaf3; color: #3b312a; border: 1px solid #d8cfc2; border-radius: 999px; min-height: 44px; padding: 0 18px; }
 .field::placeholder { color: #8a7b6e; }
 .field:focus-visible { border-color: #3b312a; }
 .entry { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-height: 48px; padding: 4px 0; border-bottom: 1px solid #e6dccd; }
@@ -46,6 +46,14 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
 .banner { margin: 14px 0 0; padding: 10px 14px; border-radius: 14px; background: #f3dccf; color: #6b3a24; font-weight: 500; }
 .banner[hidden] { display: none; }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (max-width: 480px) {
+  main { padding: 16px 14px calc(40px + env(safe-area-inset-bottom)); }
+  header { padding: 28px 16px 22px !important; border-radius: 200px 200px 24px 24px !important; }
+  .sec { padding: 16px 16px 14px; border-radius: 20px; }
+  .sec h2 { font-size: 26px; }
+  #guestName { max-width: none !important; flex: 1 1 100%; }
+  .addrow .btn { flex: 1 1 100%; }
+}
 @media (prefers-reduced-motion: reduce) { .btn, .tagbtn { transition: none; } .btn:hover { transform: none; } }
 </style>
 </head>
@@ -83,12 +91,12 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
   'use strict';
   var FOOD = [['veg', 'Vegetarian'], ['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']];
   var SECTIONS = [
-    { id: 'apps', name: 'Appetizers', target: 4, ph: 'What are you bringing?', tags: FOOD },
-    { id: 'mains', name: 'Mains', target: 3, ph: 'What are you bringing?', tags: FOOD },
-    { id: 'sides', name: 'Sides and salads', target: 8, ph: 'What are you bringing?', tags: FOOD },
-    { id: 'sweets', name: 'Desserts', target: 5, ph: 'What are you bringing?', tags: [['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']] },
-    { id: 'drinks', name: 'Drinks', target: 5, ph: 'What are you bringing?', tags: [['alc', 'Alcoholic'], ['nonalc', 'Non-alcoholic']] },
-    { id: 'supplies', name: 'Supplies', target: 3, ph: 'Ice, etc.', tags: [] }
+    { id: 'apps', name: 'Appetizers', ph: 'What are you bringing?', tags: FOOD },
+    { id: 'mains', name: 'Mains', ph: 'What are you bringing?', tags: FOOD },
+    { id: 'sides', name: 'Sides and salads', ph: 'What are you bringing?', tags: FOOD },
+    { id: 'sweets', name: 'Desserts', ph: 'What are you bringing?', tags: [['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']] },
+    { id: 'drinks', name: 'Drinks', ph: 'What are you bringing?', tags: [['alc', 'Alcoholic'], ['nonalc', 'Non-alcoholic']] },
+    { id: 'supplies', name: 'Supplies', ph: 'Ice, etc.', tags: [] }
   ];
   var FILTERS = [['all', 'Everything'], ['mine', 'Mine'], ['veg', 'Vegetarian'], ['vegan', 'Vegan'], ['gf', 'Gluten-free'], ['df', 'Dairy-free']];
   var TAGNAME = {};
@@ -119,7 +127,7 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
     var tagRow = s.tags.length ? '<div class="tagrow" role="group" aria-label="Good to know"><span class="muted" style="font-size:13px">Mine is:</span>' +
       s.tags.map(function (t) { return '<button type="button" class="tagbtn" aria-pressed="false" data-sec="' + s.id + '" data-tag="' + t[0] + '">' + esc(t[1]) + '</button>'; }).join('') + '</div>' : '';
     return '<section class="sec" aria-labelledby="h-' + s.id + '" id="sec-' + s.id + '">' +
-      '<div class="sec-head"><h2 id="h-' + s.id + '">' + esc(s.name) + '</h2><span class="status" data-role="status"></span></div>' +
+      '<div class="sec-head"><h2 id="h-' + s.id + '">' + esc(s.name) + '</h2></div>' +
       '<p class="muted" data-role="tally" style="margin:2px 0 0;font-size:14px" hidden></p>' +
       '<div class="list" data-role="list"></div>' +
       '<form class="addform" data-sec="' + s.id + '"><div class="addrow">' +
@@ -132,15 +140,11 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
 
   /* ---- update the parts that change ---- */
   function update() {
-    var n = state.entries.length, needs = [];
+    var n = state.entries.length;
     SECTIONS.forEach(function (s) {
       var all = state.entries.filter(function (e) { return e.course === s.id; });
       var c = all.length;
-      if (c < s.target) needs.push((s.target - c) + ' more ' + s.name.toLowerCase());
-      var st = c === 0 ? ['Nothing yet', '#9a4524'] : c < s.target ? ['Needs more', '#80551f'] : ['Covered', '#56644a'];
       var el = $('sec-' + s.id);
-      var status = el.querySelector('[data-role=status]');
-      status.textContent = st[0] + ' · ' + c + ' of ' + s.target; status.style.color = st[1];
       var counts = {};
       all.forEach(function (e) { (e.tags || []).forEach(function (k) { counts[k] = (counts[k] || 0) + 1; }); });
       var tally = s.tags.filter(function (t) { return counts[t[0]]; }).map(function (t) { return counts[t[0]] + ' ' + t[1].toLowerCase(); }).join(' · ');
@@ -165,10 +169,7 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
         b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     });
-    var last;
-    var narr = n === 0 ? 'Enter your name, then add what you are bringing under any section.' :
-      !needs.length ? 'Every section is covered.' : (last = needs.pop(), 'Still looking for ' + (needs.length ? needs.join(', ') + ' and ' + last : last) + '.');
-    $('summary').textContent = (n === 1 ? '1 dish' : n + ' dishes') + ' so far. ' + narr;
+    $('summary').textContent = (n === 1 ? '1 dish' : n + ' dishes') + ' so far.' + (n === 0 ? ' Enter your name, then add what you are bringing under any section.' : '');
     document.querySelectorAll('[data-filter]').forEach(function (b) {
       var on = b.getAttribute('data-filter') === state.filter;
       b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
