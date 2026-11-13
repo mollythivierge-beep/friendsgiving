@@ -162,14 +162,15 @@ main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
           '<span class="grow"></span>' +
           (canRemove ? '<button class="link" data-remove="' + esc(e.id) + '" aria-label="Remove ' + esc(e.name) + '">Remove</button>' : '') + '</div>';
       }).join('');
-      if (!shown.length) html = '<p class="muted" style="margin:10px 0">' + (!state.loaded ? 'Loading…' : all.length ? 'Nothing here matches that filter.' : 'Nothing yet. Add the first one below.') + '</p>';
+      if (!shown.length) html = '<p class="muted" style="margin:10px 0">' + (!state.loaded ? 'Loading…' : all.length ? 'Nothing here matches that filter.' : 'Be the first to add something below.') + '</p>';
       el.querySelector('[data-role=list]').innerHTML = html;
       el.querySelectorAll('.tagbtn').forEach(function (b) {
         var on = (state.draftTags[s.id] || []).indexOf(b.getAttribute('data-tag')) > -1;
         b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
     });
-    $('summary').textContent = (n === 1 ? '1 dish' : n + ' dishes') + ' so far.' + (n === 0 ? ' Enter your name, then add what you are bringing under any section.' : '');
+    $('summary').textContent = n === 0 ? 'Enter your name, then add what you are bringing under any section.' : '';
+    $('summary').hidden = n !== 0;
     document.querySelectorAll('[data-filter]').forEach(function (b) {
       var on = b.getAttribute('data-filter') === state.filter;
       b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
